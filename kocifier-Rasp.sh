@@ -5,28 +5,15 @@ set -o errtrace
 set -o errexit
 
 function raspbian_update_packages {
-#upgrading kernel without updating grub dependencies
-#sudo apt-mark hold grub2-common grub-common
-
-sudo apt-get -y update && sudo apt-get -y upgrade
+  sudo apt-get -y update
+  sudo apt-get -y upgrade
 }
 
 
 function raspbian_install_software {
-  software=( $(curl -sSL https://raw.githubusercontent.com/Ch1x0r/kocifier/raspkids_dev/raspkids_packages) )
-
-  # change this link to the raspkids_packages
-
-  for package in ${software[*]}
-  do
-    sudo apt-get -y install $package
-  done
+  sudo apt -y install `cat ./raspkids_packages | tr -s '\n' ' '`
 }
 
-
-function remove_keyboard_packages {
-  sudo apt-get remove fcitx*
-}
 
 function raspbian_kocify {
   raspbian_update_packages
